@@ -39,16 +39,13 @@ title: 设计模式
 ## Singleton 单例模式
 
 ### 特点
-1、只能有一个实例;<br>
-2、单例类必须创建自己的唯一实例;<br>
+1、只能有一个实例;
+2、单例类必须创建自己的唯一实例;
 3、单例类必须向其他对象提供这一实例
 
 >1.为什么静态内部类的单例模式是最推荐的？
-
 >2.如何在反射的情况下保证单例？
-
 >3.如何在反序列化中保证单例？
-
 >4.为什么不适用静态类
 
 ### 一.  饿汉式
@@ -100,6 +97,8 @@ public class LazySingleton1 {
 ```
 #### 3. 静态内部类(推荐版本)
 >双重校验锁版，不管性能再如何优越，还是使用了synchronized修饰符，既然使用了该修饰符，那么对性能多多少少都会造成一些影响
+
+https://blog.csdn.net/dufufd/article/details/80435669
 
 一个例子分析静态内部类
 ```
@@ -234,8 +233,7 @@ public enum EnumSingleton {
 3.对于序列化和反序列化，因为每一个枚举类型和枚举变量在JVM中都是唯一的，即Java在序列化和反序列化枚举时做了特殊的规定，枚举的writeObject、readObject、readObjectNoData、writeReplace和readResolve等方法是被编译器禁用的，因此也不存在实现序列化接口后调用readObject会破坏单例的问题。在序列化的时候Java仅仅是将枚举对象的name属性输出到结果中，**反序列化的时候则是通过java.lang.Enum的valueOf方法来根据名字查找枚举对象**。同时，编译器是不允许任何对这种序列化机制的定制的，因此禁用了writeObject、readObject、readObjectNoData、writeReplace和readResolve等方法。
 
 ```
-public static <T extends Enum<T>> T valueOf(Class<T> enumType,
-                                                String name) {
+public static <T extends Enum<T>> T valueOf(Class<T> enumType, String name) {
         if (enumType == null)
             throw new NullPointerException("enumType == null");
         if (name == null)
