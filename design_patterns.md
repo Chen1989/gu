@@ -1,34 +1,15 @@
 
 ---
-title: 设计模式
+html:
+  embed_local_images: true
+  embed_svg: true
+
+print_background: false
 ---
 
-<!-- TOC -->
+---
 
-- [常用的几种设计模式](#常用的几种设计模式)
-    - [Proxy 代理模式](#proxy-代理模式)
-    - [Factory 工厂模式](#factory-工厂模式)
-    - [Singleton 单例模式](#singleton-单例模式)
-        - [特点](#特点)
-        - [一.  饿汉式](#一--饿汉式)
-        - [二.  懒汉式](#二--懒汉式)
-            - [1. 一般版](#1-一般版)
-            - [2. 双重校验锁](#2-双重校验锁)
-            - [3. 静态内部类(推荐版本)](#3-静态内部类推荐版本)
-            - [4. 防止反射调用](#4-防止反射调用)
-            - [5. 序列化一致](#5-序列化一致)
-            - [6. 枚举实现](#6-枚举实现)
-                - [枚举特性](#枚举特性)
-        - [静态类](#静态类)
-            - [对比静态类和单例](#对比静态类和单例)
-            - [运用场景](#运用场景)
-        - [小结：](#小结)
-    - [Delegate 委派模式](#delegate-委派模式)
-    - [Strategy 策略模式](#strategy-策略模式)
-    - [Prototype 原型模式](#prototype-原型模式)
-    - [Template 模板模式](#template-模板模式)
-
-<!-- /TOC -->
+<!-- TOC -->autoauto- [常用的几种设计模式](#常用的几种设计模式)auto    - [Proxy 代理模式](#proxy-代理模式)auto    - [Factory 工厂模式](#factory-工厂模式)auto    - [Singleton 单例模式](#singleton-单例模式)auto        - [特点](#特点)auto        - [一.  饿汉式](#一--饿汉式)auto        - [二.  懒汉式](#二--懒汉式)auto            - [1. 一般版](#1-一般版)auto            - [2. 双重校验锁](#2-双重校验锁)auto            - [3. 静态内部类(推荐版本)](#3-静态内部类推荐版本)auto            - [4. 防止反射调用](#4-防止反射调用)auto            - [5. 序列化一致](#5-序列化一致)auto            - [6. 枚举实现](#6-枚举实现)auto                - [枚举特性](#枚举特性)auto        - [静态类](#静态类)auto            - [对比静态类和单例](#对比静态类和单例)auto            - [运用场景](#运用场景)auto        - [小结：](#小结)auto    - [Delegate 委派模式](#delegate-委派模式)auto    - [Strategy 策略模式](#strategy-策略模式)auto    - [Prototype 原型模式](#prototype-原型模式)auto    - [Template 模板模式](#template-模板模式)autoauto<!-- /TOC -->
 
 # 常用的几种设计模式
 
