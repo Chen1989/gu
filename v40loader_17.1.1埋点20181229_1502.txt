@@ -1,0 +1,354 @@
+// Copyright 2013 Google Inc. All Rights Reserved.
+(function() {
+    var f;
+    var h = Array.prototype.forEach ?
+    function(a, b, c) {
+        Array.prototype.forEach.call(a, b, c)
+    }: function(a, b, c) {
+        for (var d = a.length,
+        e = "string" == typeof a ? a.split("") : a, g = 0; g < d; g++) g in e && b.call(c, e[g], g, a)
+    },
+    k = function(a) {
+        return Array.prototype.concat.apply([], arguments)
+    },
+    l = function(a) {
+        var b = a.length;
+        if (0 < b) {
+            for (var c = Array(b), d = 0; d < b; d++) c[d] = a[d];
+            return c
+        }
+        return []
+    };
+    var m = "StopIteration" in this ? this.StopIteration: {
+        message: "StopIteration",
+        stack: ""
+    },
+    n = function() {};
+    n.prototype.next = function() {
+        throw m;
+    };
+    n.prototype.F = function() {
+        return this
+    };
+    var p = function(a, b) {
+        this.h = {};
+        this.c = [];
+        this.B = this.b = 0;
+        var c = arguments.length;
+        if (1 < c) {
+            if (c % 2) throw Error("Uneven number of arguments");
+            for (var d = 0; d < c; d += 2) this.set(arguments[d], arguments[d + 1])
+        } else a && this.addAll(a)
+    };
+    p.prototype.j = function() {
+        q(this);
+        for (var a = [], b = 0; b < this.c.length; b++) a.push(this.h[this.c[b]]);
+        return a
+    };
+    p.prototype.s = function() {
+        q(this);
+        return this.c.concat()
+    };
+    p.prototype.m = function(a) {
+        return r(this.h, a)
+    };
+    p.prototype.remove = function(a) {
+        return r(this.h, a) ? (delete this.h[a], this.b--, this.B++, this.c.length > 2 * this.b && q(this), !0) : !1
+    };
+    var q = function(a) {
+        var b, c;
+        if (a.b != a.c.length) {
+            for (b = c = 0; c < a.c.length;) {
+                var d = a.c[c];
+                r(a.h, d) && (a.c[b++] = d);
+                c++
+            }
+            a.c.length = b
+        }
+        if (a.b != a.c.length) {
+            var e = {};
+            for (b = c = 0; c < a.c.length;) d = a.c[c],
+            r(e, d) || (a.c[b++] = d, e[d] = 1),
+            c++;
+            a.c.length = b
+        }
+    };
+    f = p.prototype;
+    f.get = function(a, b) {
+        return r(this.h, a) ? this.h[a] : b
+    };
+    f.set = function(a, b) {
+        r(this.h, a) || (this.b++, this.c.push(a), this.B++);
+        this.h[a] = b
+    };
+    f.addAll = function(a) {
+        if (a instanceof p) {
+            var b = a.s();
+            a = a.j()
+        } else {
+            b = [];
+            var c = 0;
+            for (d in a) b[c++] = d;
+            c = [];
+            var d = 0;
+            for (var e in a) c[d++] = a[e];
+            a = c
+        }
+        for (e = 0; e < b.length; e++) this.set(b[e], a[e])
+    };
+    f.forEach = function(a, b) {
+        for (var c = this.s(), d = 0; d < c.length; d++) {
+            var e = c[d],
+            g = this.get(e);
+            a.call(b, g, e, this)
+        }
+    };
+    f.clone = function() {
+        return new p(this)
+    };
+    f.F = function(a) {
+        q(this);
+        var b = 0,
+        c = this.B,
+        d = this,
+        e = new n;
+        e.next = function() {
+            if (c != d.B) throw Error("The map has changed since the iterator was created");
+            if (b >= d.c.length) throw m;
+            var e = d.c[b++];
+            return a ? e: d.h[e]
+        };
+        return e
+    };
+    var r = function(a, b) {
+        return Object.prototype.hasOwnProperty.call(a, b)
+    };
+    var t = /^(?:([^:/ ? #.] + ) : ) ? ( ? :\ / \ / ( ? :([ ^ /?#]*)@)?([^/# ? ] * ?)( ? ::([0 - 9] + )) ? ( ? =[/#?]|$))?([^?#]+)?(?:\?([^#]*))?(?:#([\s\S]*))?$/, u = function(a, b) {
+        if (a) {
+            a = a.split("&");
+            for (var c = 0; c < a.length; c++) {
+                var d = a[c].indexOf("="),
+                e = null;
+                if (0 <= d) {
+                    var g = a[c].substring(0, d);
+                    e = a[c].substring(d + 1)
+                } else g = a[c];
+                b(g, e ? decodeURIComponent(e.replace(/\+/g, " ")) : "")
+            }
+        }
+    };
+    var v = function(a, b) {
+        this.o = this.A = this.l = "";
+        this.w = null;
+        this.u = this.v = "";
+        this.g = this.G = !1;
+        if (a instanceof v) {
+            this.g = void 0 !== b ? b: a.g;
+            w(this, a.l);
+            var c = a.A;
+            x(this);
+            this.A = c;
+            c = a.o;
+            x(this);
+            this.o = c;
+            y(this, a.w);
+            c = a.v;
+            x(this);
+            this.v = c;
+            z(this, a.i.clone());
+            a = a.u;
+            x(this);
+            this.u = a
+        } else a && (c = String(a).match(t)) ? (this.g = !!b, w(this, c[1] || "", !0), a = c[2] || "", x(this), this.A = A(a), a = c[3] || "", x(this), this.o = A(a, !0), y(this, c[4]), a = c[5] || "", x(this), this.v = A(a, !0), z(this, c[6] || "", !0), a = c[7] || "", x(this), this.u = A(a)) : (this.g = !!b, this.i = new B(null, 0, this.g))
+    }; v.prototype.toString = function() {
+        var a = [],
+        b = this.l;
+        b && a.push(D(b, E, !0), ":");
+        var c = this.o;
+        if (c || "file" == b) a.push("//"),
+        (b = this.A) && a.push(D(b, E, !0), "@"),
+        a.push(encodeURIComponent(String(c)).replace(/%25([0-9a-fA-F]{2})/g, "%$1")),
+        c = this.w,
+        null != c && a.push(":", String(c));
+        if (c = this.v) this.o && "/" != c.charAt(0) && a.push("/"),
+        a.push(D(c, "/" == c.charAt(0) ? F: G, !0)); (c = this.i.toString()) && a.push("?", c); (c = this.u) && a.push("#", D(c, H));
+        return a.join("")
+    }; v.prototype.clone = function() {
+        return new v(this)
+    };
+    var w = function(a, b, c) {
+        x(a);
+        a.l = c ? A(b, !0) : b;
+        a.l && (a.l = a.l.replace(/:$/, ""))
+    },
+    y = function(a, b) {
+        x(a);
+        if (b) {
+            b = Number(b);
+            if (isNaN(b) || 0 > b) throw Error("Bad port number " + b);
+            a.w = b
+        } else a.w = null
+    },
+    z = function(a, b, c) {
+        x(a);
+        b instanceof B ? (a.i = b, a.i.D(a.g)) : (c || (b = D(b, I)), a.i = new B(b, 0, a.g))
+    },
+    J = function(a, b) {
+        x(a);
+        a.i.set("q", b)
+    },
+    x = function(a) {
+        if (a.G) throw Error("Tried to modify a read-only Uri");
+    }; v.prototype.D = function(a) {
+        this.g = a;
+        this.i && this.i.D(a);
+        return this
+    };
+    var A = function(a, b) {
+        return a ? b ? decodeURI(a.replace(/%25/g, "%2525")) : decodeURIComponent(a) : ""
+    },
+    D = function(a, b, c) {
+        return "string" == typeof a ? (a = encodeURI(a).replace(b, K), c && (a = a.replace(/%25([0-9a-fA-F]{2})/g, "%$1")), a) : null
+    },
+    K = function(a) {
+        a = a.charCodeAt(0);
+        return "%" + (a >> 4 & 15).toString(16) + (a & 15).toString(16)
+    },
+    E = /[#\/\?@]/g, G = /[\#\?:]/g, F = /[\#\?]/g, I = /[\#\?@]/g, H = /#/g, B = function(a, b, c) {
+        this.b = this.a = null;
+        this.f = a || null;
+        this.g = !!c
+    },
+    L = function(a) {
+        a.a || (a.a = new p, a.b = 0, a.f && u(a.f,
+        function(b, c) {
+            a.add(decodeURIComponent(b.replace(/\+/g, " ")), c)
+        }))
+    }; f = B.prototype; f.add = function(a, b) {
+        L(this);
+        this.f = null;
+        a = M(this, a);
+        var c = this.a.get(a);
+        c || this.a.set(a, c = []);
+        c.push(b);
+        this.b += 1;
+        return this
+    }; f.remove = function(a) {
+        L(this);
+        a = M(this, a);
+        return this.a.m(a) ? (this.f = null, this.b -= this.a.get(a).length, this.a.remove(a)) : !1
+    }; f.m = function(a) {
+        L(this);
+        a = M(this, a);
+        return this.a.m(a)
+    }; f.forEach = function(a, b) {
+        L(this);
+        this.a.forEach(function(c, d) {
+            h(c,
+            function(c) {
+                a.call(b, c, d, this)
+            },
+            this)
+        },
+        this)
+    }; f.s = function() {
+        L(this);
+        for (var a = this.a.j(), b = this.a.s(), c = [], d = 0; d < b.length; d++) for (var e = a[d], g = 0; g < e.length; g++) c.push(b[d]);
+        return c
+    }; f.j = function(a) {
+        L(this);
+        var b = [];
+        if ("string" == typeof a) this.m(a) && (b = k(b, this.a.get(M(this, a))));
+        else {
+            a = this.a.j();
+            for (var c = 0; c < a.length; c++) b = k(b, a[c])
+        }
+        return b
+    }; f.set = function(a, b) {
+        L(this);
+        this.f = null;
+        a = M(this, a);
+        this.m(a) && (this.b -= this.a.get(a).length);
+        this.a.set(a, [b]);
+        this.b += 1;
+        return this
+    }; f.get = function(a, b) {
+        a = a ? this.j(a) : [];
+        return 0 < a.length ? String(a[0]) : b
+    }; f.toString = function() {
+        if (this.f) return this.f;
+        if (!this.a) return "";
+        for (var a = [], b = this.a.s(), c = 0; c < b.length; c++) for (var d = b[c], e = encodeURIComponent(String(d)), d = this.j(d), g = 0; g < d.length; g++) {
+            var C = e;
+            "" !== d[g] && (C += "=" + encodeURIComponent(String(d[g])));
+            a.push(C)
+        }
+        return this.f = a.join("&")
+    }; f.clone = function() {
+        var a = new B;
+        a.f = this.f;
+        this.a && (a.a = this.a.clone(), a.b = this.b);
+        return a
+    };
+    var M = function(a, b) {
+        b = String(b);
+        a.g && (b = b.toLowerCase());
+        return b
+    }; B.prototype.D = function(a) {
+        a && !this.g && (L(this), this.f = null, this.a.forEach(function(a, c) {
+            var b = c.toLowerCase();
+            c != b && (this.remove(c), this.remove(b), 0 < a.length && (this.f = null, this.a.set(M(this, b), l(a)), this.b += a.length))
+        },
+        this));
+        this.g = a
+    };
+    var N = {
+        C: "https://googleads.g.doubleclick.net/mads/static/mad/sdk/native/production/sdk-core-v40-impl.js",
+        experimentId: "318483123",
+        name: "canary-production",
+        query: "canary-experiment"
+    },
+    O = {
+        C: "https://googleads.g.doubleclick.net/mads/static/mad/sdk/native/canary/sdk-core-v40-impl.js",
+        experimentId: "318483124",
+        name: "canary-canary",
+        query: "canary-experiment"
+    },
+    P = {
+        C: "https://googleads.g.doubleclick.net/mads/static/mad/sdk/native/production/sdk-core-v40-impl.js",
+        experimentId: void 0,
+        name: "production"
+    }; (function() {
+        var a = Math.random(),
+        b = P;.01 > a ? b = N: .02 > a && (b = O);
+        window.sdkLoaderParams = {
+            loaderVersion: "4",
+            variant: b.name,
+            experimentId: b.experimentId
+        };
+        a = new v(b.C);
+        b.query && J(a, b.query);
+        var c = document.createElement("script");
+        c.src = a.toString();
+        b = document.getElementsByTagName("script")[0];
+        window.AFMA_buildAdURL = function(a) {
+            c.addEventListener("load",
+            function() {
+                window.AFMA_buildAdURL(a)
+            })
+        };
+        window.AFMA_getAd = function(a) {
+            c.addEventListener("load",
+            function() {
+                window.AFMA_getAd(a)
+            })
+        };
+        window.AFMA_getSdkConstants = function(a) {
+            c.addEventListener("load",
+            function() {
+                window.AFMA_getSdkConstants(a)
+            })
+        };
+        b.parentNode.insertBefore(c, b.nextSibling)
+    })();
+})();

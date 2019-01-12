@@ -1,4 +1,3 @@
-
 ---
 html:
   embed_local_images: true
@@ -7,16 +6,10 @@ html:
 print_background: false
 ---
 
----
-
-<!-- TOC -->autoauto- [常用的几种设计模式](#常用的几种设计模式)auto    - [Proxy 代理模式](#proxy-代理模式)auto    - [Factory 工厂模式](#factory-工厂模式)auto    - [Singleton 单例模式](#singleton-单例模式)auto        - [特点](#特点)auto        - [一.  饿汉式](#一--饿汉式)auto        - [二.  懒汉式](#二--懒汉式)auto            - [1. 一般版](#1-一般版)auto            - [2. 双重校验锁](#2-双重校验锁)auto            - [3. 静态内部类(推荐版本)](#3-静态内部类推荐版本)auto            - [4. 防止反射调用](#4-防止反射调用)auto            - [5. 序列化一致](#5-序列化一致)auto            - [6. 枚举实现](#6-枚举实现)auto                - [枚举特性](#枚举特性)auto        - [静态类](#静态类)auto            - [对比静态类和单例](#对比静态类和单例)auto            - [运用场景](#运用场景)auto        - [小结：](#小结)auto    - [Delegate 委派模式](#delegate-委派模式)auto    - [Strategy 策略模式](#strategy-策略模式)auto    - [Prototype 原型模式](#prototype-原型模式)auto    - [Template 模板模式](#template-模板模式)autoauto<!-- /TOC -->
-
 # 常用的几种设计模式
 
-[Markdown——入门指南](https://www.jianshu.com/p/1e402922ee32/)
+[TOC]
 
-## Proxy 代理模式
-## Factory 工厂模式
 ## Singleton 单例模式
 
 ### 特点
@@ -32,7 +25,7 @@ print_background: false
 ### 一.  饿汉式
 >优点就是线程安全啦，缺点很明显，类加载的时候就实例化对象了，浪费空间。
 
-```
+```java
 package com.cp.chengradle.instance;
 public class ChenSingleton1 {
     private static ChenSingleton1 instance = new ChenSingleton1();
@@ -47,7 +40,7 @@ public class ChenSingleton1 {
 #### 1. 一般版
 >将synchronized加在方法上性能大打折扣（syncrhonized会造成线程阻塞）
 
-```
+```java
 public class ChenLazySingleton1 {
     private static ChenLazySingleton1 instance;
     private ChenLazySingleton1 (){}
@@ -61,7 +54,7 @@ public class ChenLazySingleton1 {
 #### 2. 双重校验锁
 >保证了线程安全，又提高了性能。
 
-```
+```java
 public class LazySingleton1 {
     private static LazySingleton1 instance;
     private LazySingleton1 (){}
@@ -82,7 +75,7 @@ public class LazySingleton1 {
 https://blog.csdn.net/dufufd/article/details/80435669
 
 一个例子分析静态内部类
-```
+```java
 public class OuterTest {
     static {
         System.out.println("load outer class...");
@@ -117,7 +110,7 @@ static inner method
 
 **2. 一个类被加载，当且仅当其某个静态成员（静态域、构造器、静态方法等）被调用时发生。**
 
-```
+```java
 public class LazySingleton2 {
     private LazySingleton2() {
     }
@@ -137,7 +130,7 @@ public class LazySingleton2 {
 
 #### 4. 防止反射调用
 
-```
+```java
 public class LazySingleton3 {
     private static boolean initialized = false;
     private LazySingleton3() {
@@ -162,7 +155,7 @@ public class LazySingleton3 {
 readResolve()方法何时如何调用
 ObjectInputStream.readObject()-->ObjectInputStream.readObject0-->ObjectInputStream.readOrdinaryObject-->构造ObjectStreamClass类，判断readResolve()方法是否存在，反射调用readResolve()
 
-```
+```java
 public class LazyInnerSingleton implements Serializable{
     //改变量用于放置反射创建不同的单例对象
     private static boolean initialized = false;
@@ -195,7 +188,7 @@ public class LazyInnerSingleton implements Serializable{
 
 单例的枚举实现在《Effective Java》中有提到，因为其**功能完整、使用简洁、无偿地提供了序列化机制、在面对复杂的序列化或者反射攻击时仍然可以绝对防止多次实例化**等优点，单元素的枚举类型被作者认为是实现Singleton的最佳方法。
 
-```
+```java
 public enum EnumSingleton {  
     INSTANCE;  
     public void getInstance() {  
@@ -213,7 +206,7 @@ public enum EnumSingleton {
 
 3.对于序列化和反序列化，因为每一个枚举类型和枚举变量在JVM中都是唯一的，即Java在序列化和反序列化枚举时做了特殊的规定，枚举的writeObject、readObject、readObjectNoData、writeReplace和readResolve等方法是被编译器禁用的，因此也不存在实现序列化接口后调用readObject会破坏单例的问题。在序列化的时候Java仅仅是将枚举对象的name属性输出到结果中，**反序列化的时候则是通过java.lang.Enum的valueOf方法来根据名字查找枚举对象**。同时，编译器是不允许任何对这种序列化机制的定制的，因此禁用了writeObject、readObject、readObjectNoData、writeReplace和readResolve等方法。
 
-```
+```java
 public static <T extends Enum<T>> T valueOf(Class<T> enumType, String name) {
         if (enumType == null)
             throw new NullPointerException("enumType == null");
@@ -239,7 +232,7 @@ public static <T extends Enum<T>> T valueOf(Class<T> enumType, String name) {
 ```
 
 4.枚举不能反射调用,看下Constructor类的newInstance方法源码,throw new IllegalArgumentException("Cannot reflectively create enum objects")
-```
+```java
 public T newInstance(Object ... initargs)
         throws InstantiationException, IllegalAccessException,
                IllegalArgumentException, InvocationTargetException
@@ -262,7 +255,7 @@ public T newInstance(Object ... initargs)
     }
 ```
 
-```
+```java
 public enum ChenEnum {
     INSTANCE1(9),
     INSTANCE2(10);
@@ -356,7 +349,3 @@ public enum ChenEnum {
 
 ### 小结：
 实际上，我们在实际项目中一般从懒汉式v3、懒汉式v4、懒汉式v5中，根据实际情况三选一即可，并不是非要选择懒汉式v5作为单例来实现
-## Delegate 委派模式
-## Strategy 策略模式
-## Prototype 原型模式
-## Template 模板模式
